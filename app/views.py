@@ -6,24 +6,19 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 
-from app import app
-from flask import render_template, request, redirect, url_for
+from app import app, image_getter, thumbnailer
+from flask import render_template, request, redirect, url_for, jsonify
 
 
 ###
 # Routing for your application.
 ###
 
-@app.route('/')
-def home():
-    """Render website's home page."""
-    return render_template('home.html')
-
-
-@app.route('/about/')
-def about():
-    """Render the website's about page."""
-    return render_template('about.html')
+@app.route('/api/thumbnail/process', methods=['GET'])
+def processThumbnail():
+    url = request.args.get('url')
+    response = thumbnailer.get_data(url)
+    return jsonify(response)
 
 
 ###
